@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+.venv/
+backend/.venv/
+env/
+
+# Node
+node_modules/
+dist/
+build/
+.npm
+npm-debug.log*
+yarn-error.log
+
+# Docker
+docker-compose.override.yml
+
+# OS / Editor
+.DS_Store
+*.swo
+*~
+.vscode/

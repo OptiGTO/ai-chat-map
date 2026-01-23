@@ -1,0 +1,3 @@
+approval: auto
+sandbox:
+  auto_execute: true
