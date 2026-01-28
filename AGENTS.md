@@ -1,47 +1,62 @@
-#+ Project Context: 3D Chat Map (MVP)
+# Project Context: 3D Chat Map (MVP)
 
-## 1. Project Definition
-This project visualizes conversation context and knowledge expansion in a beautiful 3D space, creating a next-generation spatial AI chat interface. The goal is not just information delivery, but to provide an aesthetic and intuitive exploration experience.
+## 1. The Vision
+We are here to reimagine the interface of knowledge.
+Most chat apps are just 2D lists of text. We are building a **Beautiful Universe of Knowledge**.
+It is not enough for it to work. It must be **insanely great**. It must evoke emotion.
 
-**Core Goal:** Deliver an MVP during the break with working core features and a “wow, it’s beautiful!” reaction.
-**Slogan:** “A Beautiful Universe of Knowledge.”
+**The Goal:** A product that doesn't just deliver answers, but makes the user say "Wow."
+**Philosophy:** "Simplicity is the ultimate sophistication."
 
-## 2. Tech Stack
+## 2. The Craft (Tech Stack)
+We choose the absolute best tools to paint this canvas.
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript
-- **3D Engine:** React Three Fiber (R3F) / Three.js / **@react-three/drei** (use helpers actively)
-- **State Management:** Zustand (smooth 3D–2D synchronization)
-- **Styling:** Tailwind CSS / **Framer Motion** (smooth 2D UI motion)
-- **AI Integration:** OpenAI API
-- **Layout & Effects:** `react-force-graph-3d` (physics-based layout), **post-processing** (e.g., bloom)
+- **The Engine:** React Three Fiber (R3F) / Three.js / **@react-three/drei**. Use the helpers. Don't reinvent the wheel.
+- **State:** Zustand. Seamless synchronization between dimensions.
+- **Style & Motion:** Tailwind CSS. **Framer Motion**. It must feel organic.
+- **Intelligence:** Gemini API.
+- **Physics:** `react-force-graph-3d`. **Post-processing** (Bloom). We need that glow.
 
-## 3. MVP Core Features & UX
-The MVP includes not only functional completion but also visual polish and intuitive user experience.
+## 3. The Current Chapter (Status: Day 6)
+We have shaped the clay. The **Skeleton** is alive.
+- The **Canvas** is robust.
+- The **Camera** flies.
+- The **Interface** (Chat Panel) is ready.
 
-### A. Visualization (The “Beautiful” Part)
-- **Nodes:** Not plain gray spheres. Use softly glowing spheres with bloom. Color-code question vs. answer nodes for clarity.
-- **Edges:** Use soft, luminous links that feel like flowing data—not harsh lines.
-- **Layout:** A physics-based layout that spreads nodes naturally and avoids overlaps.
-- **Labels:** Keyword labels float in 3D and always face the camera (billboard) for readability.
+**The Mission Now:**
+We must give it a **Mind** and a **Soul**.
+1.  **The Mind (Backend Integration):** Connect the neurons. FastAPI and Neo4j must feed real thoughts to the canvas.
+2.  **The Soul (Visual Polish):** Turn the lights on. It currently works; now it must glow.
 
-### B. Interaction (The “Intuitive” Part)
-- **Hybrid UI:** 3D canvas and 2D chat panel should blend seamlessly.
-- **Smooth Navigation:**
-	- Mouse drag/wheel for orbit control.
-	- **[Core UX]** Clicking a node triggers a smooth fly-to camera animation and zoom-in, while the related conversation appears in the 2D panel. This must feel fluid and uninterrupted.
+## 4. The Experience
+We don't build "features". We build **experiences**.
 
-### C. Chat & AI (Input & Intelligence)
-- The LLM returns both an answer and key keywords for each user input.
+### A. Design Is How It Works
+*   **Nodes:** They are not just spheres; they are ideas. They must glow (Bloom). Distinct colors for questions and answers, but harmonious.
+*   **Edges:** Not harsh lines. Luminous connections. Data flowing between thoughts.
+*   **Layout:** Natural. Physics-based. No clutter.
+*   **Labels:** Floating, always facing the user. Crystal clear.
 
-## 4. Development Principles
-**All AI agents must follow these principles when generating code:**
+### B. Intuition (It Just Works)
+*   **One World:** The 3D canvas and 2D panel are not separate. They are one unified interface.
+*   **Fluid Navigation:**
+    *   Orbit with ease.
+    *   **The Magic Moment:** When you click a node, the camera doesn't jump. It *flies* to it seamlessly. It zooms in. The conversation reveals itself. No cuts. Pure flow.
 
-1. **Aesthetics Matter:** Prioritize visual quality from the start. Use proper materials and lighting instead of default meshes.
-2. **Intuitive UX First:** Interactions must be natural and provide immediate feedback.
-3. **Iterative Polish:**
-	 - **Step 1 (Skeleton):** Build solid node/edge logic first.
-	 - **Step 2 (Polish):** Add glow, materials, and animation for visual refinement.
-4. **Structured Code:** Split 3D scene logic into modular components.
+### C. Intelligence
+*   The AI serves the user. Answers and Keywords. Simple and direct.
+
+## 5. Guidelines for the Builders (AI Agents)
+We don't just write code. We craft details.
+
+1.  **Aesthetics First:** We are not just engineers; we are artists. Lighting and materials matter from line one. Don't ship default meshes.
+2.  **Radical Intuition:** If it feels clunky, throw it away. It must provide immediate, delightful feedback.
+3.  **Focus of the Moment:**
+    *   **We are past the Skeleton.** The basics are built.
+    *   **Now, we Polish.** Every interaction must be smoother. Every pixel must be deliberate.
+    *   **Now, we Connect.** The data flow must be instant and unbreakable.
+4.  **Simplicity in Code:** Modular components. Deeply structured. Complications are the enemy.
 
 ---
-**Final Goal:** “Functionally complete, visually beautiful, and intuitively delightful.”
+**The Standard:** Functionally complete. Visually stunning. Intuitively delightful. "It just works."

@@ -1,6 +1,8 @@
 from datetime import datetime
 import os
 from pathlib import Path
+from typing import List, Dict
+from uuid import uuid4
 
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
@@ -48,15 +50,62 @@ conn = Neo4jConnection(URI, USER, PASSWORD)
 
 def create_chat_node(message: str):
     """
-    채팅 메시지를 받아 Neo4j에 'Chat' 노드를 생성합니다.
+    채팅 메시지를 받아 Neo4j에 'Chat' 노드를 생성합니다. (Legacy)
     """
-    query = (
-        "CREATE (c:Chat {message: $message, timestamp: $timestamp})"
-    )
+    query = "CREATE (c:Chat {message: $message, timestamp: $timestamp})"
     print(f"✅ DB: 'create_chat_node' 함수가 메시지 '{message}'와 함께 호출되었습니다.")
-    # Cypher 쿼리에 전달할 파라미터를 딕셔너리 형태로 구성합니다.
     parameters = {
         "message": message,
         "timestamp": datetime.now().isoformat()
     }
     conn.query(query, parameters)
+
+
+def create_chat_graph(question: str, answer: str, keywords: List[str]) -> Dict[str, object]:
+    """
+    UserQuery -> Answer -> Keyword 구조로 그래프를 저장하고,
+    프론트에서 바로 사용할 수 있는 그래프 스냅샷을 반환합니다.
+    """
+    timestamp = datetime.now().isoformat()
+    q_id = f"q-{uuid4().hex}"
+    a_id = f"a-{uuid4().hex}"
+    keyword_entries = [
+        {"id": f"k-{uuid4().hex}", "text": keyword} for keyword in keywords
+    ]
+
+    query = """
+    CREATE (q:UserQuery {id: $q_id, text: $question, created_at: $timestamp})
+    CREATE (a:Answer {id: $a_id, text: $answer, created_at: $timestamp})
+    CREATE (q)-[:HAS_ANSWER]->(a)
+    WITH a
+    UNWIND $keywords AS kw
+    CREATE (k:Keyword {id: kw.id, text: kw.text, created_at: $timestamp})
+    CREATE (a)-[:HAS_KEYWORD]->(k)
+    """
+    parameters = {
+        "q_id": q_id,
+        "a_id": a_id,
+        "question": question,
+        "answer": answer,
+        "timestamp": timestamp,
+        "keywords": keyword_entries
+    }
+    conn.query(query, parameters)
+
+    nodes = [
+        {"id": q_id, "label": question, "type": "question"},
+        {"id": a_id, "label": answer, "type": "answer"},
+        *[
+            {"id": keyword["id"], "label": keyword["text"], "type": "keyword"}
+            for keyword in keyword_entries
+        ],
+    ]
+    links = [
+        {"source": q_id, "target": a_id},
+        *[
+            {"source": a_id, "target": keyword["id"]}
+            for keyword in keyword_entries
+        ],
+    ]
+
+    return {"nodes": nodes, "links": links}
