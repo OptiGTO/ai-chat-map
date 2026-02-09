@@ -3,28 +3,27 @@ import ChatPanel from "../components/ui/ChatPanel";
 
 export default function Home() {
   return (
-    <main className="min-h-screen px-4 py-8 sm:px-6 sm:py-10">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 sm:gap-8">
-        <header className="flex flex-wrap items-start justify-between gap-4 sm:items-end">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.45em] text-neutral-500">
-              3D Chat Map
-            </p>
-            <h1 className="mt-3 text-2xl font-semibold leading-tight text-neutral-900 sm:text-4xl">
-              A Beautiful Universe of Knowledge
-            </h1>
-            <p className="mt-3 max-w-2xl text-sm text-neutral-600">
-              The 2D panel now calls the backend and streams answers into the 3D
-              graph.
-            </p>
-          </div>
-          <div className="rounded-full border border-white/60 bg-white/70 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-neutral-500 shadow-sm">
-            Day 9
-          </div>
+    <main className="relative h-screen w-full overflow-hidden">
+      {/* 3D Background */}
+      <SceneShell />
+
+      {/* Floating UI Layer */}
+      <div className="pointer-events-none relative z-10 flex h-full w-full flex-col justify-end p-4 sm:p-6 lg:items-end lg:justify-center lg:p-10">
+        {/* Header Overlay */}
+        <header className="absolute left-6 top-6 max-w-md pointer-events-auto sm:left-10 sm:top-10">
+          <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-md sm:text-4xl md:text-5xl">
+            Concept
+            <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+              Map
+            </span>
+          </h1>
+          <p className="mt-2 text-sm font-medium text-slate-300 drop-shadow sm:text-base">
+            Visualize your conversation in a living 3D universe.
+          </p>
         </header>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
-          <SceneShell />
+        {/* Chat Panel - Floating */}
+        <div className="pointer-events-auto w-full max-w-md lg:w-[420px]">
           <ChatPanel />
         </div>
       </div>

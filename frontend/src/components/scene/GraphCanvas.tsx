@@ -23,9 +23,21 @@ const ForceGraph3D = dynamic(async () => {
   const mod = await import("react-force-graph-3d");
   const Component = mod.default;
 
-  return forwardRef<ForceGraphMethods<GraphNode, GraphLink>, any>(
-    (props, ref) => <Component {...props} ref={ref} />
+  const ForceGraph3DWithRef = forwardRef<ForceGraphMethods<GraphNode, GraphLink>, any>(
+    (props, ref) => (
+      <Component
+        {...props}
+        ref={
+          ref as React.MutableRefObject<
+            ForceGraphMethods<GraphNode, GraphLink> | undefined
+          >
+        }
+      />
+    )
   );
+  ForceGraph3DWithRef.displayName = "ForceGraph3DWithRef";
+
+  return ForceGraph3DWithRef;
 }, { ssr: false });
 
 const nodeColors: Record<GraphNodeType, string> = {
@@ -50,6 +62,18 @@ type GraphNodeWithPosition = GraphNode & {
   x?: number;
   y?: number;
   z?: number;
+};
+
+type GraphControls = {
+  enableDamping: boolean;
+  dampingFactor: number;
+  rotateSpeed: number;
+  zoomSpeed: number;
+  panSpeed: number;
+  enablePan: boolean;
+  minDistance: number;
+  maxDistance: number;
+  update: () => void;
 };
 
 const getLinkNodeId = (value: unknown) => {
@@ -174,7 +198,7 @@ const createLabelSprite = (label: string, color: string) => {
 };
 
 export default function GraphCanvas() {
-  const graphRef = useRef<ForceGraphMethods<GraphNode, GraphLink>>();
+  const graphRef = useRef<ForceGraphMethods<GraphNode, GraphLink> | null>(null);
   const lightsRef = useRef<THREE.Light[]>([]);
   const hasConfiguredRef = useRef(false);
   const nodeObjectMap = useRef(new Map<string, THREE.Group>());
@@ -342,7 +366,7 @@ export default function GraphCanvas() {
     scene.add(ambient, keyLight, fillLight, rimLight);
 
     const renderer = instance.renderer?.();
-    const camera = instance.camera?.();
+    const camera = instance.camera?.() as THREE.PerspectiveCamera | undefined;
     if (renderer && camera) {
       const ratio = Math.min(
         window.devicePixelRatio || 1,
@@ -440,8 +464,8 @@ export default function GraphCanvas() {
     if (!instance) {
       return;
     }
-    const controls = instance.controls?.();
-    const camera = instance.camera?.();
+    const controls = instance.controls?.() as GraphControls | undefined;
+    const camera = instance.camera?.() as THREE.PerspectiveCamera | undefined;
     if (controls) {
       controls.enableDamping = true;
       controls.dampingFactor = 0.08;
@@ -544,8 +568,9 @@ export default function GraphCanvas() {
   }, [focus]);
 
   useEffect(() => {
+    const nodeMap = nodeObjectMap.current;
     return () => {
-      nodeObjectMap.current.clear();
+      nodeMap.clear();
       if (ambientTickRef.current) {
         cancelAnimationFrame(ambientTickRef.current);
       }
@@ -569,8 +594,8 @@ export default function GraphCanvas() {
           height={canvasSize.height}
           backgroundColor="rgba(0, 0, 0, 0)"
           showNavInfo={false}
-          nodeLabel={(node) => (node as GraphNode).label}
-          nodeThreeObject={(node) => createNodeObject(node as GraphNode)}
+          nodeLabel={(node: GraphNode) => node.label}
+          nodeThreeObject={(node: GraphNode) => createNodeObject(node)}
           nodeThreeObjectExtend={false}
           linkMaterial={linkMaterial}
           linkWidth={isCompact ? 1 : 1.15}
@@ -580,8 +605,8 @@ export default function GraphCanvas() {
           linkDirectionalParticleColor={() => "rgba(248, 250, 252, 0.85)"}
           d3VelocityDecay={isCompact ? 0.36 : 0.3}
           cooldownTicks={isCompact ? 90 : 140}
-          onNodeClick={(node) => {
-            const typedNode = node as GraphNodeWithPosition;
+          onNodeClick={(node: GraphNodeWithPosition) => {
+            const typedNode = node;
             const safeNode: GraphNode = {
               id: typedNode.id,
               label: typedNode.label,
